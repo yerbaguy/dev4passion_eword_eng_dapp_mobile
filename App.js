@@ -40,12 +40,18 @@ import {ethers} from 'ethers';
  import  EWordContractt  from './utils/EWordEngContract.json';
 import EngWords from './EngWords';
 import LearnEngWords from './LearnEngWords';
+import EngWordss from './EngWordss';
+import EngWordssss from './EngWordssss';
+import AddWords from './AddWords';
+import Check from './Check';
+import VideoPlayer from './VideoPlayer';
 
 
  // import  abi  from './utils/EWordEngContract.json';
 
-
-const ewordEngContract = "0x76d9c26896A069f481efCDe2d3E0C706dAC2A9BB"
+ //0xCD1F75e419A6474e4c03eb49701c52440aB20Ee8
+// const ewordEngContract = "0x76d9c26896A069f481efCDe2d3E0C706dAC2A9BB"
+const ewordEngContract = "0xCD1F75e419A6474e4c03eb49701c52440aB20Ee8"
 
 
 const sdk = new MetaMaskSDK({
@@ -78,8 +84,17 @@ const BottomTabNavigator = () => {
       
       {/* <Tab.Screen name='Learn' component={LearnnnnScreen} options={{ headerShown: false }}/> */}
       <Tab.Screen name='Learn' component={LearnEngWords} options={{ headerShown: false }}/>
+      <Tab.Screen name='Add Word' component={AddWords} options={{ headerShown: false }}/>
+
+      <Tab.Screen name='Check' component={Check} options={{ headerShown: false }}/>
+
       {/* <Tab.Screen name='Words' component={WordssScreen} /> */}
-      <Tab.Screen name='Words' component={EngWords} options={{ headerShown: false }}/>
+      {/* <Tab.Screen name='Words' component={EngWords} options={{ headerShown: false }}/> */}
+      <Tab.Screen name='Words' component={EngWordssss} options={{ headerShown: false }}/>
+      {/* <Tab.Screen name='Words' component={EngWordss} options={{ headerShown: false }}/> */}
+
+      <Tab.Screen name="videoplayer" component={VideoPlayer} />
+
       {/* <Tab.Screen name='Contact' component={ContactScreen} /> */}
     </Tab.Navigator>
     </View>
@@ -170,6 +185,13 @@ const App: () => Node = () => {
      
        ////this adds new word to the block
       // ewordEngWContract.addEWord("variety","/vəˈraɪəti/","several different sorts of the same thing");
+      //  ewordEngWContract.addEWord("correctly","/kəˈrektli/","in a way that is accurate or true, without any mistakes");
+    
+    
+    
+     ///////  ewordEngWContract.addEWord("endorsement","/ɪnˈdɔːsmənt/","a public statement or action showing that you support somebody/something");
+
+
 
 
 
@@ -342,7 +364,7 @@ const App: () => Node = () => {
           {/* <EngWords /> */}
 
 
-
+         {/* button to connect to the wallet */}
         {/* <Button title={account ? 'Connected' : 'Connect'} onPress={connect} /> */}
 
 

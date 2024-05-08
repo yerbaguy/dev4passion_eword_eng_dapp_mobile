@@ -215,6 +215,7 @@ export interface AndroidNativeWebViewProps extends CommonNativeWebViewProps {
     allowFileAccess?: boolean;
     scalesPageToFit?: boolean;
     allowFileAccessFromFileURLs?: boolean;
+    allowsFullscreenVideo?: boolean;
     allowUniversalAccessFromFileURLs?: boolean;
     androidHardwareAccelerationDisabled?: boolean;
     androidLayerType?: AndroidLayerType;
@@ -236,6 +237,9 @@ export interface AndroidNativeWebViewProps extends CommonNativeWebViewProps {
     readonly urlPrefixesForDefaultIntent?: string[];
     forceDarkOn?: boolean;
     minimumFontSize?: number;
+    downloadingMessage?: string;
+    lackPermissionToDownloadMessage?: string;
+    allowsProtectedMedia?: boolean;
 }
 export declare type ContentInsetAdjustmentBehavior = 'automatic' | 'scrollableAxes' | 'never' | 'always';
 export declare type MediaCapturePermissionGrantType = 'grantIfSameHostElsePrompt' | 'grantIfSameHostElseDeny' | 'deny' | 'grant' | 'prompt';
@@ -244,6 +248,7 @@ export interface IOSNativeWebViewProps extends CommonNativeWebViewProps {
     allowingReadAccessToURL?: string;
     allowsBackForwardNavigationGestures?: boolean;
     allowsInlineMediaPlayback?: boolean;
+    allowsAirPlayForMediaPlayback?: boolean;
     allowsLinkPreview?: boolean;
     allowFileAccessFromFileURLs?: boolean;
     allowUniversalAccessFromFileURLs?: boolean;
@@ -257,6 +262,7 @@ export interface IOSNativeWebViewProps extends CommonNativeWebViewProps {
     decelerationRate?: number;
     directionalLockEnabled?: boolean;
     hideKeyboardAccessoryView?: boolean;
+    javaScriptEnabled?: boolean;
     pagingEnabled?: boolean;
     scrollEnabled?: boolean;
     useSharedProcessPool?: boolean;
@@ -274,6 +280,7 @@ export interface MacOSNativeWebViewProps extends CommonNativeWebViewProps {
     allowUniversalAccessFromFileURLs?: boolean;
     allowsBackForwardNavigationGestures?: boolean;
     allowsInlineMediaPlayback?: boolean;
+    allowsAirPlayForMediaPlayback?: boolean;
     allowsLinkPreview?: boolean;
     automaticallyAdjustContentInsets?: boolean;
     bounces?: boolean;
@@ -281,6 +288,7 @@ export interface MacOSNativeWebViewProps extends CommonNativeWebViewProps {
     contentInsetAdjustmentBehavior?: ContentInsetAdjustmentBehavior;
     directionalLockEnabled?: boolean;
     hideKeyboardAccessoryView?: boolean;
+    javaScriptEnabled?: boolean;
     pagingEnabled?: boolean;
     scrollEnabled?: boolean;
     useSharedProcessPool?: boolean;
@@ -288,6 +296,9 @@ export interface MacOSNativeWebViewProps extends CommonNativeWebViewProps {
 }
 export interface WindowsNativeWebViewProps extends CommonNativeWebViewProps {
     testID?: string;
+}
+export interface WindowsWebViewProps extends WebViewSharedProps {
+    useWebView2?: boolean;
 }
 export interface IOSWebViewProps extends WebViewSharedProps {
     /**
@@ -396,6 +407,11 @@ export interface IOSWebViewProps extends WebViewSharedProps {
      */
     allowsInlineMediaPlayback?: boolean;
     /**
+     * A Boolean value indicating whether AirPlay is allowed. The default value is `false`.
+     * @platform ios
+     */
+    allowsAirPlayForMediaPlayback?: boolean;
+    /**
      * Hide the accessory view when the keyboard is open. Default is false to be
      * backward compatible.
      */
@@ -494,13 +510,13 @@ export interface IOSWebViewProps extends WebViewSharedProps {
      * If `true` (default), loads the `injectedJavaScript` only into the main frame.
      * If `false`, loads it into all frames (e.g. iframes).
      * @platform ios
-    */
+     */
     injectedJavaScriptForMainFrameOnly?: boolean;
     /**
      * If `true` (default), loads the `injectedJavaScriptBeforeContentLoaded` only into the main frame.
      * If `false`, loads it into all frames (e.g. iframes).
      * @platform ios
-    */
+     */
     injectedJavaScriptBeforeContentLoadedForMainFrameOnly?: boolean;
     /**
      * Boolean value that determines whether a pull to refresh gesture is
@@ -508,7 +524,7 @@ export interface IOSWebViewProps extends WebViewSharedProps {
      * If `true`, sets `bounces` automatically to `true`
      * @platform ios
      *
-    */
+     */
     pullToRefreshEnabled?: boolean;
     /**
      * Function that is invoked when the client needs to download a file.
@@ -568,13 +584,15 @@ export interface IOSWebViewProps extends WebViewSharedProps {
     /**
      * An array of objects which will be added to the UIMenu controller when selecting text.
      * These will appear after a long press to select text.
-    */
+     * @platform ios
+     */
     menuItems?: WebViewCustomMenuItems[];
     /**
      * The function fired when selecting a custom menu item created by `menuItems`.
      * It passes a WebViewEvent with a `nativeEvent`, where custom keys are passed:
      * `customMenuKey`: the string of the menu item
      * `selectedText`: the text selected on the document
+     * @platform ios
      */
     onCustomMenuSelection?: (event: WebViewEvent) => void;
 }
@@ -631,6 +649,11 @@ export interface MacOSWebViewProps extends WebViewSharedProps {
      * @platform macos
      */
     allowsInlineMediaPlayback?: boolean;
+    /**
+     * A Boolean value indicating whether AirPlay is allowed. The default value is `false`.
+     * @platform macos
+     */
+    allowsAirPlayForMediaPlayback?: boolean;
     /**
      * Hide the accessory view when the keyboard is open. Default is false to be
      * backward compatible.
@@ -801,15 +824,15 @@ export interface AndroidWebViewProps extends WebViewSharedProps {
      */
     androidHardwareAccelerationDisabled?: boolean;
     /**
-   * https://developer.android.com/reference/android/webkit/WebView#setLayerType(int,%20android.graphics.Paint)
-   * Sets the layerType. Possible values are:
-   *
-   * - `'none'` (default)
-   * - `'software'`
-   * - `'hardware'`
-   *
-   * @platform android
-   */
+     * https://developer.android.com/reference/android/webkit/WebView#setLayerType(int,%20android.graphics.Paint)
+     * Sets the layerType. Possible values are:
+     *
+     * - `'none'` (default)
+     * - `'software'`
+     * - `'hardware'`
+     *
+     * @platform android
+     */
     androidLayerType?: AndroidLayerType;
     /**
      * Boolean value to enable third party cookies in the `WebView`. Used on
@@ -891,6 +914,24 @@ export interface AndroidWebViewProps extends WebViewSharedProps {
      * @platform android
      */
     minimumFontSize?: number;
+    /**
+     * Sets the message to be shown in the toast when downloading via the webview.
+     * Default is 'Downloading'.
+     * @platform android
+     */
+    downloadingMessage?: string;
+    /**
+     * Sets the message to be shown in the toast when webview is unable to download due to permissions issue.
+     * Default is 'Cannot download files as permission was denied. Please provide permission to write to storage, in order to download files.'.
+     * @platform android
+     */
+    lackPermissionToDownloadMessage?: string;
+    /**
+     * Boolean value to control whether webview can play media protected by DRM.
+     * Default is false.
+     * @platform android
+     */
+    allowsProtectedMedia?: boolean;
 }
 export interface WebViewSharedProps extends ViewProps {
     /**
