@@ -4,7 +4,7 @@
     "type": "PACKAGED_MANIFESTS",
     "kind": "Directory"
   },
-  "applicationId": "com.reactnativeapp",
+  "applicationId": "com.dev4passion_eword_eng_dapp_mobile",
   "variantName": "debug",
   "elements": [
     {

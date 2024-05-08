@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.reactnativeapp">
+  package="com.dev4passion_eword_eng_dapp_mobile">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
